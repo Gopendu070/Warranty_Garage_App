@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:warranty_garage/screen/categoryScreen.dart';
@@ -5,9 +6,12 @@ import 'package:warranty_garage/widget/CategoryWidg.dart';
 import 'package:warranty_garage/widget/MainBanner.dart';
 import 'package:warranty_garage/widget/MainDrawer.dart';
 import 'package:warranty_garage/widget/TagWidg.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -47,6 +51,15 @@ class MyHomePageState extends State<MyHomePage> {
     'Cosmetics',
     'Others'
   ];
+  List<Color> colorArr = [
+    Color.fromARGB(255, 255, 201, 7),
+    Color.fromARGB(255, 98, 214, 179),
+    Color.fromARGB(229, 117, 211, 120),
+    Color.fromARGB(255, 240, 136, 207),
+    Color.fromARGB(255, 252, 234, 33),
+  ];
+  var DBRef = FirebaseDatabase.instance.ref('dataBase');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +71,7 @@ class MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 print('Searched..');
               },
-              icon: Icon(Icons.search))
+              icon: Icon(Icons.verified_user_outlined))
         ],
       ),
       drawer: MainDrawer(),
@@ -79,70 +92,85 @@ class MyHomePageState extends State<MyHomePage> {
                     InkWell(
                       child: CategoryWidg(
                         name: CategoryArr[0],
-                        colorr: Color.fromARGB(255, 255, 201, 7),
+                        colorr: colorArr[0],
                       ),
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CategoryScreen(Title: CategoryArr[0])));
+                                builder: (context) => CategoryScreen(
+                                      colorr: colorArr[0],
+                                      category: CategoryArr[0],
+                                      dbRef: DBRef,
+                                    )));
                       },
                     ),
                     //Pharma
                     InkWell(
                       child: CategoryWidg(
                         name: CategoryArr[1],
-                        colorr: Color.fromARGB(255, 98, 214, 179),
+                        colorr: colorArr[1],
                       ),
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CategoryScreen(Title: CategoryArr[1])));
+                                builder: (context) => CategoryScreen(
+                                      colorr: colorArr[1],
+                                      category: CategoryArr[1],
+                                      dbRef: DBRef,
+                                    )));
                       },
                     ),
                     //Grocery
                     InkWell(
                       child: CategoryWidg(
                         name: CategoryArr[2],
-                        colorr: Colors.green,
+                        colorr: colorArr[2],
                       ),
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CategoryScreen(Title: CategoryArr[2])));
+                                builder: (context) => CategoryScreen(
+                                      colorr: colorArr[2],
+                                      category: CategoryArr[2],
+                                      dbRef: DBRef,
+                                    )));
                       },
                     ),
                     //Cosmetics
                     InkWell(
                       child: CategoryWidg(
                         name: CategoryArr[3],
-                        colorr: Color.fromARGB(255, 249, 51, 186),
+                        colorr: colorArr[3],
                       ),
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CategoryScreen(Title: CategoryArr[3])));
+                                builder: (context) => CategoryScreen(
+                                      colorr: colorArr[3],
+                                      category: CategoryArr[3],
+                                      dbRef: DBRef,
+                                    )));
                       },
                     ),
                     //Others
                     InkWell(
                       child: CategoryWidg(
                         name: CategoryArr[4],
-                        colorr: Color.fromARGB(255, 252, 234, 33),
+                        colorr: colorArr[4],
                       ),
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CategoryScreen(Title: CategoryArr[4])));
+                                builder: (context) => CategoryScreen(
+                                      colorr: colorArr[4],
+                                      category: CategoryArr[4],
+                                      dbRef: DBRef,
+                                    )));
                       },
                     ),
                   ],
