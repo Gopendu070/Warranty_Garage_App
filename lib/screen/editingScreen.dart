@@ -4,26 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:warranty_garage/widget/imagePickerDialog.dart';
 
-class EntryForm extends StatefulWidget {
+class editingScreen extends StatefulWidget {
   DatabaseReference dbRef;
   String category;
   String id;
-  EntryForm({
+  TextEditingController nameController;
+  TextEditingController serialNoController;
+  String purchaseD;
+  String expiryD;
+  editingScreen({
+    required this.nameController,
+    required this.serialNoController,
     required this.id,
     required this.dbRef,
     required this.category,
+    required this.expiryD,
+    required this.purchaseD,
   });
 
   @override
-  State<EntryForm> createState() => _EntryFormState();
+  State<editingScreen> createState() => _editingScreenState();
 }
 
-class _EntryFormState extends State<EntryForm> {
+class _editingScreenState extends State<editingScreen> {
   late String Pid;
 
   final _formKey = GlobalKey<FormState>();
-  var NameController = TextEditingController();
-  var IDController = TextEditingController();
+
   var purchaseDate = DateTime.now();
   String purchaseDate_string = "Not Entered";
   late DateTime expiryDate;
@@ -38,8 +45,11 @@ class _EntryFormState extends State<EntryForm> {
           textAlign: TextAlign.center,
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(40),
+      body:
+          // Text("Purcased on: ${widget.expiryD}"),
+          // Text("Expiring on: ${widget.purchaseD}"),
+          Padding(
+        padding: const EdgeInsets.all(18.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -48,7 +58,7 @@ class _EntryFormState extends State<EntryForm> {
               //Product Name
               Flexible(
                 child: TextFormField(
-                  controller: NameController,
+                  controller: widget.nameController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -73,7 +83,7 @@ class _EntryFormState extends State<EntryForm> {
               //Product ID
               Flexible(
                 child: TextFormField(
-                  controller: IDController,
+                  controller: widget.serialNoController,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(14),
@@ -102,7 +112,7 @@ class _EntryFormState extends State<EntryForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Select Purchase Date",
+                      "Select Purchase Date: ${widget.purchaseD}",
                       style: TextStyle(fontSize: 15.5, color: Colors.grey[600]),
                     ),
                     SizedBox(
@@ -120,6 +130,10 @@ class _EntryFormState extends State<EntryForm> {
                           purchaseDate = pDate;
                           purchaseDate_string =
                               DateFormat('yMd').format(purchaseDate);
+
+                          setState(() {
+                            widget.purchaseD = purchaseDate_string;
+                          });
                         },
                         icon: Icon(Icons.calendar_month_rounded))
                   ],
@@ -131,7 +145,7 @@ class _EntryFormState extends State<EntryForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Select Expiry Date    ",
+                      "Select Expiry Date:  ${widget.expiryD}",
                       style: TextStyle(fontSize: 15.5, color: Colors.grey[600]),
                     ),
                     SizedBox(
@@ -147,19 +161,8 @@ class _EntryFormState extends State<EntryForm> {
                           );
                           if (eDate == null) return;
                           expiryDate = eDate;
-                          expiryDate_string =
-                              DateFormat('yMd').format(expiryDate);
-                          remaining =
-                              expiryDate.difference(DateTime.now()).inMinutes;
 
-                          widget.dbRef
-                              .child(widget.category)
-                              .child(widget.id)
-                              .set({
-                            'id': widget.id,
-                            'expiry': expiryDate_string,
-                            'remMin': remaining,
-                          });
+                          expiryCheckDialog();
                         },
                         icon: Icon(Icons.calendar_month_rounded))
                   ],
@@ -199,26 +202,22 @@ class _EntryFormState extends State<EntryForm> {
                   ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          if (expiryDate_string == '#') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.red[300],
-                                content: Text("Enter Expiry Date"),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          } else {
-                            widget.dbRef
-                                .child(widget.category)
-                                .child(widget.id)
-                                .update({
-                              'name': NameController.text.toString(),
-                              'serialNo': IDController.text.toString(),
-                              'purchase': purchaseDate_string,
-                            });
-                            //Navigate to categoryScreen
-                            Navigator.pop(context);
-                          }
+                          widget.dbRef
+                              .child(widget.category)
+                              .child(widget.id)
+                              .update({
+                            'name': widget.nameController.text.toString(),
+                            'serialNo':
+                                widget.serialNoController.text.toString(),
+                            'expiry': expiryDate_string != '#'
+                                ? expiryDate_string
+                                : widget.expiryD,
+                            'purchase': purchaseDate_string != 'Not Entered'
+                                ? purchaseDate_string
+                                : widget.purchaseD,
+                          });
+                          //Navigate to categoryScreen
+                          Navigator.pop(context);
                         }
                       },
                       child: Text('Submit')),
@@ -242,5 +241,53 @@ class _EntryFormState extends State<EntryForm> {
         );
       }),
     );
+  }
+
+  Future<void> expiryCheckDialog() async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Are you sure?'),
+            content: Builder(builder: (context) {
+              var height = MediaQuery.of(context).size.height;
+              var width = MediaQuery.of(context).size.width;
+              return Container(
+                height: height - 400,
+                width: width - 100,
+                child: Row(
+                  children: [
+                    OutlinedButton(
+                        onPressed: () {
+                          expiryDate_string =
+                              DateFormat('yMd').format(expiryDate);
+                          setState(() {
+                            widget.expiryD = expiryDate_string;
+                          });
+                          remaining =
+                              expiryDate.difference(DateTime.now()).inMinutes;
+                          widget.dbRef
+                              .child(widget.category)
+                              .child(widget.id)
+                              .update({
+                            'expiry': expiryDate_string,
+                            'remMin': remaining,
+                          });
+                          Navigator.pop(context);
+                          return;
+                        },
+                        child: Text('Confirm')),
+                    OutlinedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          return;
+                        },
+                        child: Text('Cancel')),
+                  ],
+                ),
+              );
+            }),
+          );
+        });
   }
 }

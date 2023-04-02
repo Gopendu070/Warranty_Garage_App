@@ -18,13 +18,17 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  late DataSnapshot snap;
   late String id;
+  var searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    bool showSearchBar = false;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: widget.colorr,
         title: Text(widget.category),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -45,26 +49,70 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              controller: searchController,
+              cursorHeight: 20,
+              onChanged: (String value) {
+                setState(() {});
+              },
+              decoration: InputDecoration(
+                  hintText: "Search here",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(29))),
+            ),
+          ),
           Expanded(
             child: FirebaseAnimatedList(
                 query: widget.dbRef.child(widget.category),
                 itemBuilder: (context, snapshot, animation, index) {
+                  snap = snapshot;
                   var ID = snapshot.child('id').value.toString();
                   var Name = snapshot.child('name').value.toString();
                   var Expiry = snapshot.child('expiry').value.toString();
                   var Purchase = snapshot.child('purchase').value.toString();
                   var SerialNo = snapshot.child('serialNo').value.toString();
-                  //ItemTile
-                  return ItemTile(
-                    colorr: widget.colorr,
-                    dbRef: widget.dbRef,
-                    snapshot: snapshot,
-                    id: ID,
-                    name: Name,
-                    serialNo: SerialNo,
-                    expiry: Expiry,
-                    purchase: Purchase,
-                  );
+                  var remMin = snapshot.child('remMin').value.toString();
+                  var imgURL = snapshot.child('imgUrl').value.toString();
+                  if (searchController.text.isEmpty) {
+                    return Name != 'null'
+                        ? ItemTile(
+                            //ItemTile
+                            category: widget.category,
+                            colorr: widget.colorr,
+                            dbRef: widget.dbRef,
+                            snapshot: snapshot,
+                            id: ID,
+                            name: Name,
+                            serialNo: SerialNo,
+                            expiry: Expiry,
+                            purchase: Purchase,
+                            imgURL: imgURL,
+                            remMin: remMin,
+                          )
+                        : Container();
+                  } else if (Name.toLowerCase().contains(
+                      searchController.text.toLowerCase().toString())) {
+                    return Name != 'null'
+                        ? ItemTile(
+                            //ItemTile
+                            category: widget.category,
+                            colorr: widget.colorr,
+                            dbRef: widget.dbRef,
+                            snapshot: snapshot,
+                            id: ID,
+                            name: Name,
+                            serialNo: SerialNo,
+                            expiry: Expiry,
+                            purchase: Purchase,
+                            imgURL: imgURL,
+                            remMin: remMin,
+                          )
+                        : Container();
+                  } else {
+                    return Container();
+                  }
                 }),
           ),
         ],

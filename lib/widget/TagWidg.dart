@@ -14,7 +14,7 @@ class TagWidg extends StatelessWidget {
         style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w500,
-            color: Color.fromARGB(255, 142, 142, 142)),
+            color: Color.fromARGB(248, 124, 124, 124)),
         textAlign: TextAlign.left,
       ),
     );

@@ -8,8 +8,11 @@ class imagePickerDialog extends StatefulWidget {
   DatabaseReference dbRef;
   String category;
   String id;
-  imagePickerDialog(
-      {required this.dbRef, required this.category, required this.id});
+  imagePickerDialog({
+    required this.dbRef,
+    required this.category,
+    required this.id,
+  });
 
   @override
   State<imagePickerDialog> createState() => _imagePickerDialogState();

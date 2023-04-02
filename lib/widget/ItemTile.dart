@@ -1,27 +1,38 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:warranty_garage/screen/editingScreen.dart';
+import 'package:warranty_garage/screen/productDetailsScreen.dart';
 
 class ItemTile extends StatefulWidget {
   final Color colorr;
   DatabaseReference dbRef;
   DataSnapshot snapshot;
   String id;
+  String category;
+  String imgURL;
+  String remMin;
   String name, serialNo, purchase, expiry;
-  ItemTile(
-      {required this.colorr,
-      required this.dbRef,
-      required this.snapshot,
-      required this.id,
-      required this.name,
-      required this.serialNo,
-      required this.expiry,
-      required this.purchase});
+  ItemTile({
+    required this.colorr,
+    required this.dbRef,
+    required this.category,
+    required this.snapshot,
+    required this.id,
+    required this.name,
+    required this.serialNo,
+    required this.expiry,
+    required this.purchase,
+    required this.imgURL,
+    required this.remMin,
+  });
 
   @override
   State<ItemTile> createState() => _ItemTileState();
 }
 
 class _ItemTileState extends State<ItemTile> {
+  var nameController = TextEditingController();
+  var serialNoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -44,10 +55,83 @@ class _ItemTileState extends State<ItemTile> {
                 Text('Expiring  on  ${widget.expiry}'),
               ],
             ),
+            onLongPress: () {
+              menuItems();
+            },
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => productDetailsScreen(
+                            colorr: widget.colorr,
+                            name: widget.name,
+                            category: widget.category,
+                            serialNo: widget.serialNo,
+                            expiry: widget.expiry,
+                            purchase: widget.purchase,
+                            imgURL: widget.imgURL,
+                            remMin: widget.remMin,
+                          )));
+            },
             tileColor: widget.colorr,
           ),
         ),
       ),
     );
+  }
+
+  Future<void> menuItems() {
+    nameController.text = widget.name;
+    serialNoController.text = widget.serialNo;
+    return showDialog(
+        context: context,
+        builder: ((context) {
+          return AlertDialog(
+              backgroundColor: Colors.grey[300],
+              title: Text("Update"),
+              content: Builder(builder: (context) {
+                var height = MediaQuery.of(context).size.height;
+                var width = MediaQuery.of(context).size.width;
+                return Container(
+                  height: height - 700,
+                  width: width - width / 2,
+                  child: Column(children: [
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => editingScreen(
+                                  expiryD: widget.expiry,
+                                  purchaseD: widget.purchase,
+                                  nameController: nameController,
+                                  serialNoController: serialNoController,
+                                  id: widget.id,
+                                  dbRef: widget.dbRef,
+                                  category: widget.category),
+                            ));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Text('Edit  '), Icon(Icons.edit)],
+                      ),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        widget.dbRef
+                            .child(widget.category)
+                            .child(widget.id)
+                            .remove();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Text('Delete   '), Icon(Icons.delete)],
+                      ),
+                    ),
+                  ]),
+                );
+              }));
+        }));
   }
 }
