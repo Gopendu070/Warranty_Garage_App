@@ -27,9 +27,10 @@ class _productDetailsScreenState extends State<productDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 180, 186, 198),
       appBar: AppBar(
         title: Text(widget.name),
-        backgroundColor: widget.colorr,
+        backgroundColor: Color.fromARGB(255, 30, 42, 49),
       ),
       body: Center(
           child: Column(
@@ -44,11 +45,10 @@ class _productDetailsScreenState extends State<productDetailsScreen> {
                     child: Text('Sorry, No Invoice Uploaded !'),
                   ),
           ),
+          SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 115,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

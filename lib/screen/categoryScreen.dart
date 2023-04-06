@@ -25,12 +25,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     bool showSearchBar = false;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 183, 182, 182),
       appBar: AppBar(
-        backgroundColor: widget.colorr,
+        backgroundColor: Color.fromARGB(255, 30, 42, 49),
         title: Text(widget.category),
         // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 30, 42, 49),
         child: Icon(Icons.add),
         onPressed: () {
           /***Setting the product id***/
@@ -54,12 +56,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
             child: TextField(
               controller: searchController,
               cursorHeight: 20,
+              cursorColor: Color.fromARGB(255, 30, 42, 49),
               onChanged: (String value) {
                 setState(() {});
               },
               decoration: InputDecoration(
                   hintText: "Search here",
                   border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 30, 42, 49), width: 2),
+                      borderRadius: BorderRadius.circular(29)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 30, 42, 49), width: 2),
                       borderRadius: BorderRadius.circular(29))),
             ),
           ),
@@ -76,7 +85,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   var remMin = snapshot.child('remMin').value.toString();
                   var imgURL = snapshot.child('imgUrl').value.toString();
                   if (searchController.text.isEmpty) {
-                    return Name != 'null'
+                    return (Name != 'null')
                         ? ItemTile(
                             //ItemTile
                             category: widget.category,

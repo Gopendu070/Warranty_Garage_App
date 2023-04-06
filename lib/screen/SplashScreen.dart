@@ -23,9 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 249, 212, 255),
+      backgroundColor: Color.fromARGB(255, 238, 183, 247),
       body: Center(
-        child: Icon(Icons.mail),
+        child: Container(
+          height: 100,
+          width: 100,
+          child: Image.asset('lib/image/iconApp.png'),
+        ),
       ),
     );
   }

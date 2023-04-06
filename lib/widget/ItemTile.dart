@@ -47,12 +47,18 @@ class _ItemTileState extends State<ItemTile> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             leading: Text(
               '${widget.name}',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Colors.white),
             ),
             title: Column(
               children: [
-                Text('Purchased on ${widget.purchase}'),
-                Text('Expiring  on  ${widget.expiry}'),
+                Text(
+                  'Purchased on ${widget.purchase}',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Text(
+                  'Expiring  on  ${widget.expiry}',
+                  style: TextStyle(color: Colors.white),
+                ),
               ],
             ),
             onLongPress: () {
@@ -73,7 +79,7 @@ class _ItemTileState extends State<ItemTile> {
                             remMin: widget.remMin,
                           )));
             },
-            tileColor: widget.colorr,
+            tileColor: Color.fromARGB(255, 30, 42, 49),
           ),
         ),
       ),
@@ -93,7 +99,7 @@ class _ItemTileState extends State<ItemTile> {
                 var height = MediaQuery.of(context).size.height;
                 var width = MediaQuery.of(context).size.width;
                 return Container(
-                  height: height - 700,
+                  height: height - 550,
                   width: width - width / 2,
                   child: Column(children: [
                     OutlinedButton(

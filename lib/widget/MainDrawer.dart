@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:warranty_garage/main.dart';
+import 'package:warranty_garage/screen/aboutScreen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -23,7 +25,40 @@ class MainDrawer extends StatelessWidget {
                 )
               ],
             ),
-          )
+          ),
+          Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.home),
+                  title: Text('Home'),
+                  onTap: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.account_circle),
+                  title: Text('Profile'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(Icons.info_outline_rounded),
+                  title: Text('About'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => aboutWidget()));
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

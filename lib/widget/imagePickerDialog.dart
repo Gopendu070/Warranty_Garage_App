@@ -48,7 +48,7 @@ class _imagePickerDialogState extends State<imagePickerDialog> {
           var width = MediaQuery.of(context).size.width;
 
           return Container(
-            height: height - 500,
+            height: height - 450,
             width: width - 100,
             child: Column(
               children: [
