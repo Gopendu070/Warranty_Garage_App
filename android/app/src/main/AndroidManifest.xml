@@ -2,6 +2,7 @@
     package="com.example.warranty_garage">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
    <application
         android:label="Warranty Garage"
         android:name="${applicationName}"

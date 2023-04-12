@@ -30,7 +30,7 @@ class _animatedLISState extends State<animatedLIST> {
                 var Purchase = snapshot.child('purchase').value.toString();
                 var SerialNo = snapshot.child('serialNo').value.toString();
                 var remMin = snapshot.child('remMin').value.toString();
-                var imgURL = snapshot.child('imgUrl').value.toString();
+                var imgURL = snapshot.child('imgUrl');
                 //ItemTile
                 return Name != 'null'
                     ? ItemTile(

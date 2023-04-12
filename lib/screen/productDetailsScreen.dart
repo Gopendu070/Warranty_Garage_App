@@ -1,4 +1,6 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:warranty_garage/screen/imageViewScreen.dart';
 
 class productDetailsScreen extends StatefulWidget {
   String name;
@@ -7,7 +9,7 @@ class productDetailsScreen extends StatefulWidget {
   String expiry;
   String remMin;
   Color colorr;
-  String imgURL;
+  DataSnapshot imgURL;
   String category;
   productDetailsScreen(
       {required this.colorr,
@@ -24,6 +26,7 @@ class productDetailsScreen extends StatefulWidget {
 }
 
 class _productDetailsScreenState extends State<productDetailsScreen> {
+  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +40,55 @@ class _productDetailsScreenState extends State<productDetailsScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
+            margin: EdgeInsets.only(left: 9, right: 9),
             height: 300,
-            width: 300,
-            child: widget.imgURL != 'null'
-                ? Image.network(widget.imgURL)
+            width: 280,
+            alignment: Alignment.center,
+            child: widget.imgURL.child('1').value.toString() != 'null'
+                ? ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      count = index + 1;
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 300,
+                          width: 150,
+                          child: InkWell(
+                            child: Image.network(
+                              widget.imgURL
+                                  .child('${index + 1}')
+                                  .value
+                                  .toString(),
+                              fit: BoxFit.cover,
+                            ),
+                            onTap: () {
+                              print(widget.imgURL.children.length);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => imageViewScreen(
+                                    imgUrl: widget.imgURL
+                                        .child('${index + 1}')
+                                        .value
+                                        .toString(),
+                                    name: widget.name,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    }),
+                    itemCount: widget.imgURL.children.length - 1,
+                  )
                 : Center(
                     child: Text('Sorry, No Invoice Uploaded !'),
                   ),
           ),
+          SizedBox(height: 10),
+          Divider(thickness: 2),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +109,7 @@ class _productDetailsScreenState extends State<productDetailsScreen> {
                       Text(
                         'Name  :  ${widget.name}',
                         style:
-                            TextStyle(fontSize: 16.5, color: Colors.grey[600]),
+                            TextStyle(fontSize: 16.5, color: Colors.grey[700]),
                       ),
                     ],
                   ),
@@ -98,7 +142,7 @@ class _productDetailsScreenState extends State<productDetailsScreen> {
                       Text(
                         'Expiry Date  :  ${widget.expiry}',
                         style:
-                            TextStyle(fontSize: 16.5, color: Colors.grey[600]),
+                            TextStyle(fontSize: 16.5, color: Colors.grey[700]),
                       ),
                     ],
                   ),

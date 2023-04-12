@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:warranty_garage/screen/multi_imgPicker.dart';
 import 'package:warranty_garage/widget/imagePickerDialog.dart';
 
 class EntryForm extends StatefulWidget {
@@ -20,7 +21,6 @@ class EntryForm extends StatefulWidget {
 
 class _EntryFormState extends State<EntryForm> {
   late String Pid;
-
   final _formKey = GlobalKey<FormState>();
   var NameController = TextEditingController();
   var IDController = TextEditingController();
@@ -32,7 +32,9 @@ class _EntryFormState extends State<EntryForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 183, 182, 182),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 30, 42, 49),
         title: Text(
           '${widget.category}',
           textAlign: TextAlign.center,
@@ -176,7 +178,15 @@ class _EntryFormState extends State<EntryForm> {
                     ),
                     IconButton(
                         onPressed: () {
-                          imagePickerDialoge(); //showing the dialog box
+                          // imagePickerDialoge(); //showing the dialog box
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => multi_imgPicker(
+                                        dbRef: widget.dbRef,
+                                        category: widget.category,
+                                        id: widget.id,
+                                      )));
                         },
                         icon: Icon(Icons.upload_rounded))
                   ],
@@ -191,7 +201,11 @@ class _EntryFormState extends State<EntryForm> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text("Cancel")),
+                      child: Text("Cancel"),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(100, 20),
+                      )),
+
                   SizedBox(
                     width: 15,
                   ),
@@ -202,7 +216,8 @@ class _EntryFormState extends State<EntryForm> {
                           if (expiryDate_string == '#') {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                backgroundColor: Colors.red[300],
+                                backgroundColor:
+                                    Color.fromARGB(200, 245, 58, 58),
                                 content: Text("Enter Expiry Date"),
                                 duration: Duration(seconds: 2),
                               ),
@@ -221,6 +236,9 @@ class _EntryFormState extends State<EntryForm> {
                           }
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(100, 20),
+                      ),
                       child: Text('Submit')),
                 ],
               )

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:warranty_garage/widget/imagePickerDialog.dart';
 
+import 'multi_imgPicker.dart';
+
 class editingScreen extends StatefulWidget {
   DatabaseReference dbRef;
   String category;
@@ -36,6 +38,7 @@ class _editingScreenState extends State<editingScreen> {
   late DateTime expiryDate;
   String expiryDate_string = "#";
   late int remaining;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,7 +182,15 @@ class _editingScreenState extends State<editingScreen> {
                     ),
                     IconButton(
                         onPressed: () {
-                          imagePickerDialoge(); //showing the dialog box
+                          // imagePickerDialoge(); //showing the dialog box
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => multi_imgPicker(
+                                        dbRef: widget.dbRef,
+                                        category: widget.category,
+                                        id: widget.id,
+                                      )));
                         },
                         icon: Icon(Icons.upload_rounded))
                   ],
@@ -253,9 +264,10 @@ class _editingScreenState extends State<editingScreen> {
               var height = MediaQuery.of(context).size.height;
               var width = MediaQuery.of(context).size.width;
               return Container(
-                height: height - 400,
-                width: width - 100,
+                height: height - 640,
+                width: width - 150,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OutlinedButton(
                         onPressed: () {
@@ -277,6 +289,9 @@ class _editingScreenState extends State<editingScreen> {
                           return;
                         },
                         child: Text('Confirm')),
+                    SizedBox(
+                      width: 20,
+                    ),
                     OutlinedButton(
                         onPressed: () {
                           Navigator.pop(context);
