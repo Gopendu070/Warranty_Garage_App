@@ -26,7 +26,6 @@ class productDetailsScreen extends StatefulWidget {
 }
 
 class _productDetailsScreenState extends State<productDetailsScreen> {
-  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,54 +38,105 @@ class _productDetailsScreenState extends State<productDetailsScreen> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            margin: EdgeInsets.only(left: 9, right: 9),
-            height: 300,
-            width: 280,
-            alignment: Alignment.center,
-            child: widget.imgURL.child('1').value.toString() != 'null'
-                ? ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      count = index + 1;
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 300,
-                          width: 150,
-                          child: InkWell(
-                            child: Image.network(
-                              widget.imgURL
-                                  .child('${index + 1}')
-                                  .value
-                                  .toString(),
-                              fit: BoxFit.cover,
-                            ),
-                            onTap: () {
-                              print(widget.imgURL.children.length);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => imageViewScreen(
-                                    imgUrl: widget.imgURL
-                                        .child('${index + 1}')
-                                        .value
-                                        .toString(),
-                                    name: widget.name,
+          widget.imgURL.child('2').value.toString() != 'null'
+              ? Container(
+                  margin: EdgeInsets.only(left: 9, right: 9),
+                  height: 300,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: widget.imgURL.child('1').value.toString() != 'null'
+                      ? RawScrollbar(
+                          thumbVisibility: false,
+                          thumbColor: Colors.grey,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: ((context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 300,
+                                  width: 150,
+                                  child: InkWell(
+                                    child: Image.network(
+                                      widget.imgURL
+                                          .child('${index + 1}')
+                                          .value
+                                          .toString(),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    onTap: () {
+                                      print(widget.imgURL.children.length);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => imageViewScreen(
+                                            imgUrl: widget.imgURL
+                                                .child('${index + 1}')
+                                                .value
+                                                .toString(),
+                                            name: widget.name,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               );
-                            },
+                            }),
+                            itemCount: widget.imgURL.children.length - 1,
                           ),
+                        )
+                      : Center(
+                          child: Text('Sorry, No Invoice Uploaded !'),
                         ),
-                      );
-                    }),
-                    itemCount: widget.imgURL.children.length - 1,
-                  )
-                : Center(
-                    child: Text('Sorry, No Invoice Uploaded !'),
-                  ),
-          ),
+                )
+              : Container(
+                  margin: EdgeInsets.only(left: 9, right: 9),
+                  height: 300,
+                  width: 200,
+                  alignment: Alignment.center,
+                  child: widget.imgURL.child('1').value.toString() != 'null'
+                      ? ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: ((context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 300,
+                                width: 150,
+                                child: InkWell(
+                                  child: Image.network(
+                                    widget.imgURL
+                                        .child('${index + 1}')
+                                        .value
+                                        .toString(),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  onTap: () {
+                                    print(widget.imgURL.children.length);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => imageViewScreen(
+                                          imgUrl: widget.imgURL
+                                              .child('${index + 1}')
+                                              .value
+                                              .toString(),
+                                          name: widget.name,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          }),
+                          itemCount: widget.imgURL.children.length - 1,
+                        )
+                      : Center(
+                          child: Text('Sorry, No Invoice Uploaded !'),
+                        ),
+                ),
           SizedBox(height: 10),
           Divider(thickness: 2),
           SizedBox(height: 20),

@@ -36,22 +36,39 @@ class _multi_imgPickerState extends State<multi_imgPicker> {
                   ? Container(
                       height: 200,
                       width: 200,
-                      child: Center(child: Text('Pick from gallery')),
+                      child: Center(
+                          child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(28.0),
+                          child: Text(
+                            'Pick from gallery',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[800]),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(10)),
+                      )),
                     )
-                  : SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Wrap(
-                          children: multiImages
-                              .map((e) => Padding(
-                                    padding: const EdgeInsets.all(7.0),
-                                    child: Image.file(
-                                      File(e.path),
-                                      width: 130,
-                                      height: 250,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ))
-                              .toList()),
+                  : RawScrollbar(
+                      thumbColor: Colors.grey,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(
+                            children: multiImages
+                                .map((e) => Padding(
+                                      padding: const EdgeInsets.all(7.0),
+                                      child: Image.file(
+                                        File(e.path),
+                                        width: 130,
+                                        height: 250,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ))
+                                .toList()),
+                      ),
                     ),
               onTap: () async {
                 multiImages = await multiImagePicker();
@@ -72,6 +89,11 @@ class _multi_imgPickerState extends State<multi_imgPicker> {
                         .toString() ==
                     'null') {
                   if (multiImages.isNotEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Uploading'),
+                      duration: Duration(seconds: 6),
+                      backgroundColor: Colors.green[400],
+                    ));
                     int i = 1;
                     imgURLs = await multiImageUpload(multiImages);
                     for (String url in imgURLs) {
@@ -93,6 +115,11 @@ class _multi_imgPickerState extends State<multi_imgPicker> {
                       .child('imgUrl')
                       .remove();
                   if (multiImages.isNotEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Uploading'),
+                      duration: Duration(seconds: 6),
+                      backgroundColor: Colors.green[400],
+                    ));
                     int i = 1;
                     imgURLs = await multiImageUpload(multiImages);
                     for (String url in imgURLs) {
