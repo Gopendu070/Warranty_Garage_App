@@ -9,8 +9,9 @@ class aboutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 180, 186, 198),
+      backgroundColor: Color.fromARGB(255, 183, 182, 182),
       appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 30, 42, 49),
         title: Text('About Us'),
       ),
       body: Center(
@@ -21,14 +22,17 @@ class aboutWidget extends StatelessWidget {
               width: 350,
               child: Text(
                 about,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(
-              height: 38,
+              height: 85,
             ),
             Container(
-              child: TagWidg('Terms & Conditions :'),
+              child: TagWidg(' Terms & Conditions :'),
             ),
             Container(
               width: 350,

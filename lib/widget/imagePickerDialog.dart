@@ -56,14 +56,25 @@ class _imagePickerDialogState extends State<imagePickerDialog> {
                   child: Container(
                     child: _image != null
                         ? Image.file(_image!.absolute)
-                        : Center(child: Text('Pick from Gallery')),
-                    height: 200,
-                    width: 200,
+                        : Center(
+                            child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.all(17.0),
+                              child: Text('Pick from Gallery'),
+                            ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(width: 1)),
+                          )),
+                    height: 270,
+                    width: 230,
                   ),
                   onTap: () {
                     getImageGallery();
                   },
                 ),
+                SizedBox(height: 18),
+                //upload button
                 OutlinedButton(
                   onPressed: () async {
                     firebase_storage.Reference ref = firebase_storage
@@ -83,12 +94,14 @@ class _imagePickerDialogState extends State<imagePickerDialog> {
                         .update({
                       'imgUrl': newUrl.toString(),
                     });
+                    //goimg back
                     Navigator.pop(context);
+                    //uploading..
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         backgroundColor: Colors.green[300],
                         content: Text("Uploading.."),
-                        duration: Duration(seconds: 3),
+                        duration: Duration(seconds: 5),
                       ),
                     );
                   },

@@ -6,15 +6,15 @@ class MainBanner extends StatelessWidget {
     return Container(
       //c1
       width: double.infinity,
-      height: 170,
+      height: 150,
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
-            Color.fromARGB(255, 209, 46, 238),
-            Color.fromARGB(255, 5, 75, 131)
+            Color.fromARGB(175, 94, 148, 141),
+            Color.fromARGB(255, 2, 48, 42)
           ]),
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(25),
-            bottomRight: Radius.circular(25),
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
           )),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

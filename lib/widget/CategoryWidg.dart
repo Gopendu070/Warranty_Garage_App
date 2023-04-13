@@ -16,16 +16,33 @@ class CategoryWidg extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Container(
           height: 160,
-          width: 180,
+          width: 150,
           child: Center(
-            child: Text(
-              name,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
+              child: name != 'Others'
+                  ? Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 14),
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('lib/image/${name}.png'),
+                                  fit: BoxFit.contain)),
+                        ),
+                        SizedBox(height: 0),
+                        Text(
+                          name,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    )
+                  : Text(
+                      name,
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    )),
           decoration: BoxDecoration(
             gradient: gradientColor,
             borderRadius: BorderRadius.circular(15),

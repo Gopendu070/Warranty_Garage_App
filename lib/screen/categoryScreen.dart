@@ -33,7 +33,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 30, 42, 49),
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.white),
         onPressed: () {
           /***Setting the product id***/
           id = DateTime.now().microsecondsSinceEpoch.toString();
@@ -73,56 +73,60 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
           ),
           Expanded(
-            child: FirebaseAnimatedList(
-                query: widget.dbRef.child(widget.category),
-                itemBuilder: (context, snapshot, animation, index) {
-                  snap = snapshot;
-                  var ID = snapshot.child('id').value.toString();
-                  var Name = snapshot.child('name').value.toString();
-                  var Expiry = snapshot.child('expiry').value.toString();
-                  var Purchase = snapshot.child('purchase').value.toString();
-                  var SerialNo = snapshot.child('serialNo').value.toString();
-                  var remMin = snapshot.child('remMin').value.toString();
-                  var imgURL = snapshot.child('imgUrl').value.toString();
-                  if (searchController.text.isEmpty) {
-                    return (Name != 'null')
-                        ? ItemTile(
-                            //ItemTile
-                            category: widget.category,
-                            colorr: widget.colorr,
-                            dbRef: widget.dbRef,
-                            snapshot: snapshot,
-                            id: ID,
-                            name: Name,
-                            serialNo: SerialNo,
-                            expiry: Expiry,
-                            purchase: Purchase,
-                            imgURL: imgURL,
-                            remMin: remMin,
-                          )
-                        : Container();
-                  } else if (Name.toLowerCase().contains(
-                      searchController.text.toLowerCase().toString())) {
-                    return Name != 'null'
-                        ? ItemTile(
-                            //ItemTile
-                            category: widget.category,
-                            colorr: widget.colorr,
-                            dbRef: widget.dbRef,
-                            snapshot: snapshot,
-                            id: ID,
-                            name: Name,
-                            serialNo: SerialNo,
-                            expiry: Expiry,
-                            purchase: Purchase,
-                            imgURL: imgURL,
-                            remMin: remMin,
-                          )
-                        : Container();
-                  } else {
-                    return Container();
-                  }
-                }),
+            child: Scrollbar(
+              trackVisibility: true,
+              thumbVisibility: true,
+              child: FirebaseAnimatedList(
+                  query: widget.dbRef.child(widget.category),
+                  itemBuilder: (context, snapshot, animation, index) {
+                    snap = snapshot;
+                    var ID = snapshot.child('id').value.toString();
+                    var Name = snapshot.child('name').value.toString();
+                    var Expiry = snapshot.child('expiry').value.toString();
+                    var Purchase = snapshot.child('purchase').value.toString();
+                    var SerialNo = snapshot.child('serialNo').value.toString();
+                    var remMin = snapshot.child('remMin').value.toString();
+                    var imgURL = snapshot.child('imgUrl');
+                    if (searchController.text.isEmpty) {
+                      return (Name != 'null')
+                          ? ItemTile(
+                              //ItemTile
+                              category: widget.category,
+                              colorr: widget.colorr,
+                              dbRef: widget.dbRef,
+                              snapshot: snapshot,
+                              id: ID,
+                              name: Name,
+                              serialNo: SerialNo,
+                              expiry: Expiry,
+                              purchase: Purchase,
+                              imgURL: imgURL,
+                              remMin: remMin,
+                            )
+                          : Container();
+                    } else if (Name.toLowerCase().contains(
+                        searchController.text.toLowerCase().toString())) {
+                      return Name != 'null'
+                          ? ItemTile(
+                              //ItemTile
+                              category: widget.category,
+                              colorr: widget.colorr,
+                              dbRef: widget.dbRef,
+                              snapshot: snapshot,
+                              id: ID,
+                              name: Name,
+                              serialNo: SerialNo,
+                              expiry: Expiry,
+                              purchase: Purchase,
+                              imgURL: imgURL,
+                              remMin: remMin,
+                            )
+                          : Container();
+                    } else {
+                      return Container();
+                    }
+                  }),
+            ),
           ),
         ],
       ),

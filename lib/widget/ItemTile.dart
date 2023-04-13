@@ -9,7 +9,7 @@ class ItemTile extends StatefulWidget {
   DataSnapshot snapshot;
   String id;
   String category;
-  String imgURL;
+  DataSnapshot imgURL;
   String remMin;
   String name, serialNo, purchase, expiry;
   ItemTile({
@@ -31,6 +31,8 @@ class ItemTile extends StatefulWidget {
 }
 
 class _ItemTileState extends State<ItemTile> {
+  // double screenWidth = MediaQuery.of().size.width;
+  var w = double.infinity;
   var nameController = TextEditingController();
   var serialNoController = TextEditingController();
   @override
@@ -45,18 +47,23 @@ class _ItemTileState extends State<ItemTile> {
           child: ListTile(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            leading: Text(
+            title: Text(
               '${widget.name}',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
-            title: Column(
+            trailing: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 5),
                 Text(
-                  'Purchased on ${widget.purchase}',
+                  widget.purchase == 'Not Entered'
+                      ? 'Purchased: ---'
+                      : 'Purchased: ${widget.purchase}',
                   style: TextStyle(color: Colors.white),
                 ),
+                SizedBox(height: 5),
                 Text(
-                  'Expiring  on  ${widget.expiry}',
+                  'Expiry:   ${widget.expiry}',
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -99,7 +106,7 @@ class _ItemTileState extends State<ItemTile> {
                 var height = MediaQuery.of(context).size.height;
                 var width = MediaQuery.of(context).size.width;
                 return Container(
-                  height: height - 550,
+                  height: height - 620,
                   width: width - width / 2,
                   child: Column(children: [
                     OutlinedButton(
